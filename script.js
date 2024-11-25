@@ -1,7 +1,8 @@
 class HashMap {
     constructor() {
-        this.loadFactor = 0.8;
+        this.loadFactor = 0.75;
         this.capacity = 16;
+        this.buckets = new Array(this.capacity).fill(null);
     }
     hash(key) {
         let hashCode = 0;
@@ -13,12 +14,22 @@ class HashMap {
      
         return hashCode;
       }
+    set(key, value) {
+        let index = this.hash(key);
+        if (this.buckets[index] == null) {
+            this.buckets[index] = { key: key, value: value };
+        } 
+
+    }
 }
 
 const Map = new HashMap();
-console.log(Map.hash("James"));
-console.log(Map.hash("karl"));
-console.log(Map.hash("dog"));
-console.log(Map.hash("jay"));
+console.log(Map.hash("apple"));
+console.log(Map.hash("J"));
+Map.set("apple", "blue"); // index 10
+Map.set("J", "red"); // index 10
+console.log(Map.buckets);
+
+
 
 
