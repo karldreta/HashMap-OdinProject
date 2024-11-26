@@ -55,13 +55,42 @@ class HashMap {
             }
         }
     }
+    get(key) {
+        const index = this.hash(key);
+
+        // If the bucket is empty return null
+        if (this.buckets[index] == null) {
+            return null;
+        }
+
+        // If the bucket is a Linked List, find the "index in the list", then "at" that index get the value. 
+        if (this.buckets[index] instanceof LinkedList) {
+            const indexInList = this.buckets[index].find(key);
+            
+            // We also check if the key is found in the list, i.e find() returns null.
+            if (indexInList != null) {
+                return this.buckets[index].at(indexInList)["value"]["value"]; // The first "value" is the Node itself, the second is the value of the key.      
+            } else {
+                return null;
+            }
+
+        } else {
+            return this.buckets[index].value;
+        }
+    }
 }
 
 const Map = new HashMap();
 Map.set("apple", "red"); // index 10
 Map.set("J", "red"); // index 10 - Collision!
 Map.set("apple", "blue"); // index 10 - To Edit
-Map.set("J", "orange"); // index 10 - To Edit
+Map.set("J", "orange"); // index 10 - To 
+Map.set("dog", "pink"); // index 10 - To Edit
+console.log(Map.get("rghjukliolpnmndh"));
+ // 12
+
+console.log(Map.hash("rghjukliolpnmndh"));
+
 console.log(Map.buckets);
 
 
