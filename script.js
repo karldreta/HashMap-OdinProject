@@ -29,7 +29,17 @@ class HashMap {
         else {
             // Check first if the current index is already a Linked List
             if (this.buckets[index] instanceof LinkedList) {
-                this.buckets[index].append({ key: key, value: value });
+
+                // If it is, check if we already have the same key in the list.
+                const indexInList = this.buckets[index].find(key);
+                if (indexInList != null) {
+
+                    // Traverse the list to the value of the object and set it to the new value.
+                    this.buckets[index].at(indexInList)["value"] = { key: key, value: value };
+                } else {
+                    // Otherwise add the collision to the list.
+                    this.buckets[index].append({ key: key, value: value });
+                }
             } else {
                 // If its NOT a Linked List create one
                 let list = new LinkedList();
@@ -48,30 +58,11 @@ class HashMap {
 }
 
 const Map = new HashMap();
-console.log(Map.hash("apple"));
-console.log(Map.hash("J"));
 Map.set("apple", "red"); // index 10
 Map.set("J", "red"); // index 10 - Collision!
-Map.set("apple", "blue"); // index 10
-
-Map.set("orange", "cat");
+Map.set("apple", "blue"); // index 10 - To Edit
+Map.set("J", "orange"); // index 10 - To Edit
 console.log(Map.buckets);
-console.log(Map.buckets[14]["key"]);
-
-console.log(Map.buckets[10]);
-
-// const list = new LinkedList();
-// list.append("Bryan"); // 2
-// list.append("Jerald"); // 3
-// list.append("Eric"); // 4
-// list.append("Justin"); // 5
-// // list.prepend("Karl"); // 0
-// // list.prepend("Rey"); // 1
-// // list.insertAt("John", 5);
-// // list.removeAt(4);
-// console.log(list.size());
-// console.log(list.toString());
-// // console.log(list.find("Karl"));
 
 
 
