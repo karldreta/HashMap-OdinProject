@@ -24,9 +24,25 @@ class HashMap {
         // If the keys are the same overwrite the value while still keeping yhe key
         if (this.buckets[index].key == key) {
             this.buckets[index] = { key: key, value: value };
-        } else {
-            // We'll be implementing a Linked List here
+        } 
+        // We'll be implementing a Linked List here
+        else {
+            // Check first if the current index is already a Linked List
+            if (this.buckets[index] instanceof LinkedList) {
+                this.buckets[index].append({ key: key, value: value });
+            } else {
+                // If its NOT a Linked List create one
+                let list = new LinkedList();
 
+                // After initiation of the list append the current key/value pair in the index to the start of the list.
+                list.append({ key: this.buckets[index].key, value: this.buckets[index].value}); 
+
+                // Then append the new key/value pair -- the one that caused the collision.
+                list.append({ key: key, value: value });
+
+                // Then turn the entire index(bucket) into the list. *Note, the order of operations matter here.
+                this.buckets[index] = list; 
+            }
         }
     }
 }
@@ -34,11 +50,28 @@ class HashMap {
 const Map = new HashMap();
 console.log(Map.hash("apple"));
 console.log(Map.hash("J"));
-Map.set("apple", "blue"); // index 10
 Map.set("apple", "red"); // index 10
 Map.set("J", "red"); // index 10 - Collision!
+Map.set("apple", "blue"); // index 10
+
+Map.set("orange", "cat");
+console.log(Map.buckets);
+console.log(Map.buckets[14]["key"]);
+
 console.log(Map.buckets[10]);
 
+// const list = new LinkedList();
+// list.append("Bryan"); // 2
+// list.append("Jerald"); // 3
+// list.append("Eric"); // 4
+// list.append("Justin"); // 5
+// // list.prepend("Karl"); // 0
+// // list.prepend("Rey"); // 1
+// // list.insertAt("John", 5);
+// // list.removeAt(4);
+// console.log(list.size());
+// console.log(list.toString());
+// // console.log(list.find("Karl"));
 
 
 
