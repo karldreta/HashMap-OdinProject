@@ -78,6 +78,31 @@ class HashMap {
             return this.buckets[index].value;
         }
     }
+    has(key) {
+        const index = this.hash(key);
+        if (this.buckets[index] == null) {
+            return false;
+        }
+        // EDGE CASE - What if two keys point to the same index, the index wont be null and hence will return true, even tho they have different values.
+
+        // Case #1: The bucket contains a key-value (not a LinkedList).
+        if (!(this.buckets[index] instanceof LinkedList)) {
+            // Check if the key matches the one in this bucket.
+            return this.buckets[index].key == key;
+        }
+
+        // Case #2: The bucket contains a LinkedList from to collisions.
+        if (this.buckets[index] instanceof LinkedList) {
+            const indexInList = this.buckets[index].find(key);
+            
+            // If indexList is not null, that means find() had found the key inside the Linked List and hence we'll return true.
+            
+           return indexInList != null;
+        }
+
+        // Fallback (should not be reachable if the logic is correct):
+        return false;
+    }
 }
 
 const Map = new HashMap();
@@ -86,10 +111,16 @@ Map.set("J", "red"); // index 10 - Collision!
 Map.set("apple", "blue"); // index 10 - To Edit
 Map.set("J", "orange"); // index 10 - To 
 Map.set("dog", "pink"); // index 10 - To Edit
-console.log(Map.get("rghjukliolpnmndh"));
- // 12
+// console.log(Map.get("apple"));
+console.log(Map.has("dfgw9opkl,m")); // index 10
+console.log(Map.has("dog"));
+console.log(Map.has("apple"));
 
-console.log(Map.hash("rghjukliolpnmndh"));
+
+
+console.log(Map.hash("ddfghjklwrodjkls")); // index 12
+
+
 
 console.log(Map.buckets);
 
