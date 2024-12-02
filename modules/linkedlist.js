@@ -54,6 +54,18 @@ export default class LinkedList {
     return current;
   }
   pop() {
+    if (this.length == 0) {
+      throw new Error("Cannot pop from an empty list.");
+    }
+
+    if (this.length == 1) {
+      // If only one node exists, clear the list.
+      this.start = null;
+      this.end = null;
+      this.length--;
+      return;
+    } 
+
     // Traverse to the second to the last node.
     let current = this.start;
     for (let i = 0; i < this.length - 2; i++) {
@@ -107,12 +119,17 @@ export default class LinkedList {
     this.length++; // Then add 1 to the size of the list.
   }
   removeAt(index) {
+    if (index < 0 || index >= this.length) {
+      throw new Error("Index out of bounds.");
+  }
     if (index == 0) {
       this.start = this.head().next; // head() method returns the current head, so we'll just have to set the start of list to the next node of the head().
       this.length--;
       return;
     }
-    if (index == this.length) {
+    if (index == this.length - 1) {
+      console.log("hi");
+      
       this.pop();
       return;
     }
