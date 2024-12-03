@@ -127,7 +127,7 @@ class HashMap {
     length() {
         // We need to iterate over the map and check each bucket.
         let storedKeys = 0; // Initialize the count.
-        for (let index = 0; index < this.buckets.length; index++) {
+        for (let index = 0; index < this.buckets.length - 1; index++) {
             if (this.buckets[index] !== null) {
                 // If this bucket is not empty we check what's inside.
 
@@ -147,8 +147,30 @@ class HashMap {
     clear() {
         // Removes all entries in the hash map.
             // We will reinitialize the buckets, know that this will also set the linked lists to null.
-            // This way we no longer need to loop.
             this.buckets = new Array(this.capacity).fill(null);
+            // This way we no longer need to loop.
+    }
+    keys() {
+        // Returns an array containing all the keys inside the hash map.
+        let keysArray = [];        
+        for (let index = 0; index < this.buckets.length - 1; index++) {
+            if (this.buckets[index] !== null) {
+                if (!(this.buckets[index] instanceof LinkedList)) {
+                    // If it's not a Linked List that means there's is no collision (so one key-value only), we'll just have to push the key in our array
+                    keysArray.push(this.buckets[index].key);
+                } else {
+                    // Well have to create another array which we will concatenate to the keysArray.
+                    let current = this.buckets[index].head(); // There is a built in head method on every Linked List which will give us the head of the list.
+                    let listArray = [];
+                    for (let i = 0; i < this.buckets[index].length; i++) {
+                        listArray.push(current.value.key)         
+                        current = current.next;
+                      }
+                    keysArray = keysArray.concat(listArray);
+                }
+            }
+        }
+        return keysArray;
     }
 }
 
@@ -164,9 +186,9 @@ Map.set("dfgw9opkl,m", "red"); // index 10
 // console.log(Map.has("dfgw9opkl,m")); // index 10
 // console.log(Map.has("dog"));
 // console.log(Map.has("apple"));
-console.log(Map.remove("apple"))
-console.log(Map.remove("J"));
-console.log(Map.remove("dfgw9opkl,m"));
+// console.log(Map.remove("apple"))
+// console.log(Map.remove("J"));
+// console.log(Map.remove("dfgw9opkl,m"));
 // console.log(Map.remove("dfgw9opkl"));
 // Map.set("apple", "peach"); // index 10
 // Map.set("app", "green"); // index 10
@@ -176,18 +198,8 @@ console.log(Map.remove("dfgw9opkl,m"));
 // console.log(Map.hash("ddfghjklwrodjkls")); // index 12
 console.log(Map.length());
 
+console.log(Map.keys());
 
-
-Map.clear()
-Map.set("apple", "red"); // index 10
-Map.set("J", "red"); // index 10 - Collision!
-Map.set("apple", "blue"); // index 10 - To Edit
-Map.set("J", "orange"); // index 10 - To 
-Map.set("dog", "pink"); // index 10 - To Edit
-Map.set("dfgw9opkl,m", "red"); // index 10 
-console.log(Map.length());
-Map.clear()
-console.log(Map.length());
 
 console.log(Map.buckets);
 
