@@ -146,12 +146,9 @@ class HashMap {
     }
     clear() {
         // Removes all entries in the hash map.
-        for (let index = 0; index < this.buckets.length; index++) {
-            if (this.buckets[index] !== null) {
-                // We will set everything back to its original state, know that this will also set the linked lists to null.
-                this.buckets[index] = null;
-            }
-        }
+            // We will reinitialize the buckets, know that this will also set the linked lists to null.
+            // This way we no longer need to loop.
+            this.buckets = new Array(this.capacity).fill(null);
     }
 }
 
