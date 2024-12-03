@@ -91,7 +91,7 @@ class HashMap {
             return this.buckets[index].key == key;
         }
 
-        // Case #2: The bucket contains a LinkedList from to collisions.
+        // Case #2: The bucket contains a LinkedList caused by collisions.
         if (this.buckets[index] instanceof LinkedList) {
             const indexInList = this.buckets[index].find(key);
             
@@ -103,6 +103,28 @@ class HashMap {
         // Fallback (should not be reachable if the logic is correct):
         return false;
     }
+    
+    remove(key) {
+        // takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
+        const index = this.hash(key);
+        if (this.buckets[index] == null) {
+            return false;
+        }
+
+        if (!(this.buckets[index] instanceof LinkedList)) {
+            // Set the index to null
+            this.buckets[index] = null;
+            return true;
+        }
+
+        if (this.buckets[index] instanceof LinkedList) {
+            const indexInList = this.buckets[index].find(key);
+            this.buckets[index].removeAt(indexInList);
+            // This will keep the Linked List structure of the index. Even whn the list is empty, the head node is still set to null. 
+            // This is fine as it allows for easier handling of future collisions. Instead of going back and fort.
+           return true;
+        }
+    }
 }
 
 const Map = new HashMap();
@@ -111,14 +133,19 @@ Map.set("J", "red"); // index 10 - Collision!
 Map.set("apple", "blue"); // index 10 - To Edit
 Map.set("J", "orange"); // index 10 - To 
 Map.set("dog", "pink"); // index 10 - To Edit
+Map.set("dfgw9opkl,m", "red"); // index 10 
+
 // console.log(Map.get("apple"));
-console.log(Map.has("dfgw9opkl,m")); // index 10
-console.log(Map.has("dog"));
-console.log(Map.has("apple"));
+// console.log(Map.has("dfgw9opkl,m")); // index 10
+// console.log(Map.has("dog"));
+// console.log(Map.has("apple"));
+// console.log(Map.remove("dog"))
+// console.log(Map.remove("J"));
+// console.log(Map.remove("apple"));
+// console.log(Map.remove("dfgw9opkl,m"));
+// console.log(Map.remove("dfgw9opkl"));
 
-
-
-console.log(Map.hash("ddfghjklwrodjkls")); // index 12
+// console.log(Map.hash("ddfghjklwrodjkls")); // index 12
 
 
 
