@@ -5,7 +5,6 @@ class HashMap {
         this.loadFactor = 0.75;
         this.capacity = 16;
         this.buckets = new Array(this.capacity).fill(null);
-        this.storedKeys = 0;
     }
     hash(key) {
         let hashCode = 0;
@@ -116,9 +115,7 @@ class HashMap {
             // Set the index to null
             this.buckets[index] = null;
             return true;
-        }
-
-        if (this.buckets[index] instanceof LinkedList) {
+        } else {
             const indexInList = this.buckets[index].find(key);
             this.buckets[index].removeAt(indexInList);
             // This will keep the Linked List structure of the index. Even whn the list is empty, the head node is still set to null. 
@@ -129,23 +126,32 @@ class HashMap {
 
     length() {
         // We need to iterate over the map and check each bucket.
-        this.storedKeys = 0; // But first we have to reset the count before we start counting.
+        let storedKeys = 0; // Initialize the count.
         for (let index = 0; index < this.buckets.length; index++) {
             if (this.buckets[index] !== null) {
                 // If this bucket is not empty we check what's inside.
 
                 if (!(this.buckets[index] instanceof LinkedList)) {
                     // If it is not a linked list (the bucket has no collisions), it should have only one key-value pair.
-                    this.storedKeys++; // So, we add 1
+                    storedKeys++; // So, we add 1
 
                 } else {
                     // Otherwise, if it is a Linked List:
                     // The LinkedList class has a length property so we'll take that value then add it to the storedKeys.
-                    this.storedKeys += this.buckets[index].length;
+                    storedKeys += this.buckets[index].length;
                 }
             }
         }
-        return this.storedKeys;
+        return storedKeys;
+    }
+    clear() {
+        // Removes all entries in the hash map.
+        for (let index = 0; index < this.buckets.length; index++) {
+            if (this.buckets[index] !== null) {
+                // We will set everything back to its original state, know that this will also set the linked lists to null.
+                this.buckets[index] = null;
+            }
+        }
     }
 }
 
@@ -161,13 +167,13 @@ Map.set("dfgw9opkl,m", "red"); // index 10
 // console.log(Map.has("dfgw9opkl,m")); // index 10
 // console.log(Map.has("dog"));
 // console.log(Map.has("apple"));
-// console.log(Map.remove("dog"))
-// console.log(Map.remove("J"));
-// console.log(Map.remove("dfgw9opkl,m"));
+console.log(Map.remove("apple"))
+console.log(Map.remove("J"));
+console.log(Map.remove("dfgw9opkl,m"));
 // console.log(Map.remove("dfgw9opkl"));
-Map.set("apple", "peach"); // index 10
-Map.set("app", "green"); // index 10
-Map.set("mango", "yellow"); // index 10
+// Map.set("apple", "peach"); // index 10
+// Map.set("app", "green"); // index 10
+// Map.set("mango", "yellow"); // index 10
 
 
 // console.log(Map.hash("ddfghjklwrodjkls")); // index 12
@@ -175,6 +181,16 @@ console.log(Map.length());
 
 
 
+Map.clear()
+Map.set("apple", "red"); // index 10
+Map.set("J", "red"); // index 10 - Collision!
+Map.set("apple", "blue"); // index 10 - To Edit
+Map.set("J", "orange"); // index 10 - To 
+Map.set("dog", "pink"); // index 10 - To Edit
+Map.set("dfgw9opkl,m", "red"); // index 10 
+console.log(Map.length());
+Map.clear()
+console.log(Map.length());
 
 console.log(Map.buckets);
 

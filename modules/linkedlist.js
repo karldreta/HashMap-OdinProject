@@ -128,8 +128,6 @@ export default class LinkedList {
       return;
     }
     if (index == this.length - 1) {
-      console.log("hi");
-      
       this.pop();
       return;
     }
