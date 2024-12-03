@@ -5,6 +5,7 @@ class HashMap {
         this.loadFactor = 0.75;
         this.capacity = 16;
         this.buckets = new Array(this.capacity).fill(null);
+        this.storedKeys = 0;
     }
     hash(key) {
         let hashCode = 0;
@@ -125,6 +126,27 @@ class HashMap {
            return true;
         }
     }
+
+    length() {
+        // We need to iterate over the map and check each bucket.
+        this.storedKeys = 0; // But first we have to reset the count before we start counting.
+        for (let index = 0; index < this.buckets.length; index++) {
+            if (this.buckets[index] !== null) {
+                // If this bucket is not empty we check what's inside.
+
+                if (!(this.buckets[index] instanceof LinkedList)) {
+                    // If it is not a linked list (the bucket has no collisions), it should have only one key-value pair.
+                    this.storedKeys++; // So, we add 1
+
+                } else {
+                    // Otherwise, if it is a Linked List:
+                    // The LinkedList class has a length property so we'll take that value then add it to the storedKeys.
+                    this.storedKeys += this.buckets[index].length;
+                }
+            }
+        }
+        return this.storedKeys;
+    }
 }
 
 const Map = new HashMap();
@@ -141,11 +163,16 @@ Map.set("dfgw9opkl,m", "red"); // index 10
 // console.log(Map.has("apple"));
 // console.log(Map.remove("dog"))
 // console.log(Map.remove("J"));
-// console.log(Map.remove("apple"));
 // console.log(Map.remove("dfgw9opkl,m"));
 // console.log(Map.remove("dfgw9opkl"));
+Map.set("apple", "peach"); // index 10
+Map.set("app", "green"); // index 10
+Map.set("mango", "yellow"); // index 10
+
 
 // console.log(Map.hash("ddfghjklwrodjkls")); // index 12
+console.log(Map.length());
+
 
 
 
