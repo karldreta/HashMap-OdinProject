@@ -172,6 +172,29 @@ class HashMap {
         }
         return keysArray;
     }
+    values() {
+        // Returns an array containing all the values.
+        // Here, we can simply copy the code above, but instead of "keys" we'll use "values".
+        let valuesArray = [];        
+        for (let index = 0; index < this.buckets.length - 1; index++) {
+            if (this.buckets[index] !== null) {
+                if (!(this.buckets[index] instanceof LinkedList)) {
+
+                    valuesArray.push(this.buckets[index].value);
+                } else {
+
+                    let current = this.buckets[index].head(); 
+                    let listArray = [];
+                    for (let i = 0; i < this.buckets[index].length; i++) {
+                        listArray.push(current.value.value)         
+                        current = current.next;
+                      }
+                      valuesArray = valuesArray.concat(listArray);
+                }
+            }
+        }
+        return valuesArray;
+    }
 }
 
 const Map = new HashMap();
@@ -199,6 +222,8 @@ Map.set("dfgw9opkl,m", "red"); // index 10
 console.log(Map.length());
 
 console.log(Map.keys());
+console.log(Map.values());
+
 
 
 console.log(Map.buckets);
