@@ -127,7 +127,7 @@ class HashMap {
     length() {
         // We need to iterate over the map and check each bucket.
         let storedKeys = 0; // Initialize the count.
-        for (let index = 0; index < this.buckets.length - 1; index++) {
+        for (let index = 0; index < this.buckets.length; index++) {
             if (this.buckets[index] !== null) {
                 // If this bucket is not empty we check what's inside.
 
@@ -153,7 +153,7 @@ class HashMap {
     keys() {
         // Returns an array containing all the keys inside the hash map.
         let keysArray = [];        
-        for (let index = 0; index < this.buckets.length - 1; index++) {
+        for (let index = 0; index < this.buckets.length; index++) {
             if (this.buckets[index] !== null) {
                 if (!(this.buckets[index] instanceof LinkedList)) {
                     // If it's not a Linked List that means there's is no collision (so one key-value only), we'll just have to push the key in our array
@@ -176,7 +176,7 @@ class HashMap {
         // Returns an array containing all the values.
         // Here, we can simply copy the code above, but instead of "keys" we'll use "values".
         let valuesArray = [];        
-        for (let index = 0; index < this.buckets.length - 1; index++) {
+        for (let index = 0; index < this.buckets.length; index++) {
             if (this.buckets[index] !== null) {
                 if (!(this.buckets[index] instanceof LinkedList)) {
 
@@ -194,6 +194,27 @@ class HashMap {
             }
         }
         return valuesArray;
+    }
+    entries() {
+        // Returns an array that contains each key, value pair.
+        // We'll simply enclose each index in brackets as we push.
+        let entriesArray = [];
+        for (let index = 0; index < this.buckets.length; index++) {
+            if (this.buckets[index] !== null) {
+                if (!(this.buckets[index] instanceof LinkedList)) {
+                    entriesArray.push([this.buckets[index].key, this.buckets[index].value]);
+                } else {
+                    let current = this.buckets[index].head(); 
+                    let listArray = [];
+                    for (let i = 0; i < this.buckets[index].length; i++) {
+                        listArray.push([current.value.key, current.value.value])         
+                        current = current.next;
+                      }
+                      entriesArray = entriesArray.concat(listArray);
+                }
+            }
+        }
+        return entriesArray;
     }
 }
 
@@ -219,11 +240,12 @@ Map.set("dfgw9opkl,m", "red"); // index 10
 
 
 // console.log(Map.hash("ddfghjklwrodjkls")); // index 12
+
+// console.log(Map.keys());
+// console.log(Map.values());
+console.log(Map.entries());
+
 console.log(Map.length());
-
-console.log(Map.keys());
-console.log(Map.values());
-
 
 
 console.log(Map.buckets);
