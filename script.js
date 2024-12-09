@@ -64,50 +64,44 @@ class HashMap {
             // Create new buckets (doubledBuckets)
             // Call the entries() method inside this class, which returns an array of arrays that each contain all the key-value pair from the original buckets(this.buckets).
                 // hash() each key "entries()[index][0]" returning the index upon which to put this entry on the new buckets (doubledBuckets).
-                // 
-                // Question, the capacity (which comes after the modulo) at hash() needs to be doubled 
+                // We'll use the same approach as we did on filling in the buckets
+                // Then set the doubled buckets to the buckets instance of the class.
 
         // For rehashing:
-        if ((this.length() / this.capacity) > this.loadFactor) {
-            this.capacity *= 2; // Double the capacity
+        if ((this.length() / this.capacity) >= this.loadFactor) {
+            this.capacity *= 2; // Double the capacity. This will also double the capacity used in the hash() method.
             let doubledBuckets = new Array(this.capacity).fill(null);
             this.entries().forEach(element => {
-                // console.log(element[0]);
-                // console.log(this.hash(element[0])); // the "this.capacity" inside the hash is now updated to double.
-                // doubledBuckets[this.hash(element[0])] = element;
-                // console.log(doubledBuckets);
                 if (doubledBuckets[this.hash(element[0])] == null) {
                     doubledBuckets[this.hash(element[0])] = { key: element[0], value: element[1] };
                 }
-                // We'll be implementing a Linked List here
-            //     else {
-            //         // Check first if the current index is already a Linked List
-            //         if (doubledBuckets[this.hash(element[0])] instanceof LinkedList) {
-            //             // If it is, check if we already have the same key in the list.
-            //             const indexInList = doubledBuckets[this.hash(element[0])].find(this.hash(element[0]));
-            //             if (indexInList != null) {
+                // NOTE: Since this will run automatically, the if statement for checking the same key but diff value will not apply. Cause either it was already updated before rehashing or we update it after the doubling.
+                else {
+                    // Check first if the current index is already a Linked List
+                    if (doubledBuckets[this.hash(element[0])] instanceof LinkedList) {
+                        // If it is, check if we already have the same key in the list.
+                        const indexInList = doubledBuckets[this.hash(element[0])].find(this.hash(element[0]));
+                        if (indexInList != null) {
+                            // Traverse the list to the value of the object and set it to the new value.
+                            doubledBuckets[this.hash(element[0])].at(indexInList)[element[0]] = { key: key, value: value };
+                        } else {
+                            // Otherwise add the collision to the list.
+                            doubledBuckets[this.hash(element[0])].append({ key: element[0], value: element[1] });
+                        }
+                    } else {
+                        // If its NOT a Linked List create one
+                        let list = new LinkedList();
+                        // After initiation of the list append the current key/value pair in the index to the start of the list.
+                        list.append({ key: doubledBuckets[this.hash(element[0])].key, value: doubledBuckets[this.hash(element[0])].value }); 
         
-            //                 // Traverse the list to the value of the object and set it to the new value.
-            //                 doubledBuckets[this.hash(element[0])].at(indexInList)[element[0]] = { key: key, value: value };
-            //             } else {
-            //                 // Otherwise add the collision to the list.
-            //                 doubledBuckets[this.hash(element[0])].append({ key: element[0], value: element[1] });
-            //             }
-            //         } else {
-            //             // If its NOT a Linked List create one
-            //             let list = new LinkedList();
+                        // Then append the new key/value pair -- the one that caused the collision.
+                        list.append({ key: element[0], value: element[1] });
         
-            //             // After initiation of the list append the current key/value pair in the index to the start of the list.
-            //             list.append({ key: element[0], value: element[1] }); 
-        
-            //             // Then append the new key/value pair -- the one that caused the collision.
-            //             list.append({ key: element[0], value: element[1] });
-        
-            //             // Then turn the entire index(bucket) into the list. *Note, the order of operations matter here.
-            //             doubledBuckets[this.hash(element[0])] = list; 
-            //         }
-            //     }
-            // });
+                        // Then turn the entire index(bucket) into the list. *Note, the order of operations matter here.
+                        doubledBuckets[this.hash(element[0])] = list; 
+                    }
+                }
+            });
             this.buckets = doubledBuckets;
         }            
     }
@@ -275,31 +269,6 @@ class HashMap {
 }
 
 const test = new HashMap();
-// Map.set("apple", "red"); // index 10
-// Map.set("J", "red"); // index 10 - Collision!
-// Map.set("apple", "blue"); // index 10 - To Edit
-// Map.set("J", "orange"); // index 10 - To 
-// Map.set("dog", "pink"); // index 10 - To Edit
-// Map.set("dfgw9opkl,m", "red"); // index 10 
-
-// console.log(Map.get("apple"));
-// console.log(Map.has("dfgw9opkl,m")); // index 10
-// console.log(Map.has("dog"));
-// console.log(Map.has("apple"));
-// console.log(Map.remove("apple"))
-// console.log(Map.remove("J"));
-// console.log(Map.remove("dfgw9opkl,m"));
-// console.log(Map.remove("dfgw9opkl"));
-// Map.set("apple", "peach"); // index 10
-// Map.set("app", "green"); // index 10
-// Map.set("mango", "yellow"); // index 10
-
-
-// console.log(Map.hash("ddfghjklwrodjkls")); // index 12
-
-// console.log(Map.keys());
-// console.log(Map.values());
-// console.log(Map.entries());
 test.set('apple', 'red')
 test.set('banana', 'yellow')
 test.set('carrot', 'orange')
@@ -313,9 +282,11 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 test.set('moon', 'silver')
-test.set('moon', 'gold')
+console.log(test.length());
+test.set('lion', 'red')
+console.log(test.length());
+console.log(test.buckets);
 
-console.log(test.buckets[28]);
 
 
 
