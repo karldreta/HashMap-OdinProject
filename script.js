@@ -282,8 +282,19 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 test.set('moon', 'silver')
-console.log(test.length());
-test.set('lion', 'red')
+test.set('orange', 'orange')
+test.set('strawberry', 'red')
+test.set('blueberry', 'blue')
+test.set('kiwi', 'green')
+test.set('watermelon', 'pink')
+test.set('pear', 'green')
+test.set('mango', 'yellow')
+test.set('peach', 'pink')
+test.set('pineapple', 'yellow')
+test.set('plum', 'purple')
+test.set('cherry', 'red')
+test.set('lime', 'green')
+test.set('coconut', 'brown')
 console.log(test.length());
 console.log(test.buckets);
 
