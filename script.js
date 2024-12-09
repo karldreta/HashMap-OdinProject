@@ -112,7 +112,6 @@ class HashMap {
         if (this.buckets[index] == null) {
             return null;
         }
-
         // If the bucket is a Linked List, find the "index in the list", then "at" that index get the value. 
         if (this.buckets[index] instanceof LinkedList) {
             const indexInList = this.buckets[index].find(key);
@@ -123,9 +122,12 @@ class HashMap {
             } else {
                 return null;
             }
+        } 
 
-        } else {
+        if (this.buckets[index].key == key) {
             return this.buckets[index].value;
+        } else {
+            return null
         }
     }
     has(key) {
@@ -296,6 +298,7 @@ test.set('cherry', 'red')
 test.set('lime', 'green')
 test.set('coconut', 'brown')
 console.log(test.length());
+console.log(test.entries());
 console.log(test.buckets);
 
 
