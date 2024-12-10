@@ -299,7 +299,7 @@ test.set('lime', 'green')
 test.set('coconut', 'brown')
 console.log(test.length());
 console.log(test.entries());
-console.log(test.buckets);
+// console.log(test.buckets);
 
 
 

@@ -1,0 +1,13 @@
+{
+  "name": "hashmap-odinproject",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "The goal of this project was to deepen my understanding of how hash maps work under the hood, including concepts like hashing, collision handling, and dynamic resizing.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
